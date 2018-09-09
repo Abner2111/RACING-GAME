@@ -30,8 +30,22 @@ Titulo = Label(C_main,image=img_titulo, bg="white"\
 
 Titulo.place(y=0,x=0)
 
+def About():
+    root.withdraw()
+    about = Toplevel()
+    about.title("About the developer")
+    about.minsize(1280, 720)
+    about.resizable(width=NO, height=NO)
+
+    C_about = Label(root, bg="#DED7DE", width=1280, height=720)
+
+
+
 #BOTONES
 img_play = cargarImg("play.gif")
-play = ttk.Button(C_main, image = img_play)
-play.place(x=465, y=310)
+play = Button(C_main, image = img_play)
+play.place(x=465, y=310)\
+
+
+#MAINLOOP
 root.mainloop()
