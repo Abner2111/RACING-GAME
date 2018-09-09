@@ -37,15 +37,27 @@ def About():
     about.minsize(1280, 720)
     about.resizable(width=NO, height=NO)
 
-    C_about = Label(root, bg="#DED7DE", width=1280, height=720)
+    C_about = Label(about, bg="white", width=1280, height=720)
+    C_about.place(x=0,y=0)
+
+    tec = Label(C_about, text="INSTITUTO TECNOLÓGICO DE COSTA RICA", bg="white", font = ("times new roman", 28)).place(y=0,x=50)
+    Salir = ttk.Button(C_about, text="SALIR", command = lambda :Main(about))
 
 
+
+
+def Main(Window):
+    Window.withdraw()
+    root.deiconify()
 
 #BOTONES
 img_play = cargarImg("play.gif")
+img_about = cargarImg("info.gif")
 play = Button(C_main, image = img_play)
-play.place(x=465, y=310)\
+play.place(x=465, y=310)
 
+about = Button(C_main, image = img_about, command = lambda : About())
+about.place(y = 630, x = 1190)
 
 #MAINLOOP
 root.mainloop()
