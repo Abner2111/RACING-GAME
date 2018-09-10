@@ -42,8 +42,7 @@ def About():
 
     tec = Label(C_about, text="INSTITUTO TECNOLÓGICO DE COSTA RICA", bg="white", font = ("times new roman", 28)).place(y=0,x=50)
     Salir = ttk.Button(C_about, text="SALIR", command = lambda :Main(about))
-
-
+    Salir.place(x=0,y=690)
 
 
 def Main(Window):
