@@ -6,7 +6,7 @@ from threading import Thread
 import threading
 import time
 import os
-import winsound
+#import winsound
 from tkinter import ttk
 
 #funcion para cargar imágenes
@@ -33,6 +33,7 @@ C_main.place(x=0, y=0)
 img_titulo = cargarImg("titulo.gif")
 Titulo = Label(C_main,image=img_titulo, bg="white"\
                , borderwidth=0, highlightthickness=0)
+
 
 Titulo.place(y=0,x=0)
 
@@ -61,15 +62,16 @@ def About():
     version = Label(C_about, text="Version: 1.0", bg="white", font=("times new roman", 28))
     ult_modc = Label(C_about, text="Última modificación: ND", bg="white", font=("times new roman", 28))
     ult_modc.place(y=250, x=25)
-    ruta = os.path.join('img',"Foto.gif")
-    img_foto = imagen=PhotoImage(file=ruta)
-    foto = ttk.Label(C_about, image=img_foto)
+    img_foto = cargarImg("Foto.gif")
+    foto = Label(C_about, image=img_foto, bg="white")
+    foto.photo=img_foto
     foto.place(y=50, x=700)
     #Botón de salir
     Salir = ttk.Button(C_about, text="SALIR", command=lambda: Main(about))
     Salir.place(x=1198, y=690)
 
 def Juego():
+    return None
 
 
 
