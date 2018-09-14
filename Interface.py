@@ -1,6 +1,5 @@
 from tkinter import *
 import tkinter
-from tkinter import messagebox
 import random
 from threading import Thread
 import threading
@@ -73,7 +72,7 @@ def About():
     ult_modc.place(y=250, x=25)
     ruta = os.path.join('img',"Foto.gif")
     img_foto = imagen=PhotoImage(file=ruta)
-    foto = ttk.Label(C_about, image=img_foto)
+    foto = Label(C_about, image=img_foto)
     foto.photo = img_foto
     foto.place(y=50, x=700)
     #Botón de salir
@@ -87,10 +86,55 @@ def Juego(nombre):
     juego.minsize(1280, 720)
     juego.resizable(width=NO, height=NO)
 
-    C_game = Canvas(juego, bg="#DED7DE", width=1280, height=720)
-    C_game.place(y=0, x=0)
-    test = Label(C_game, text=nombre)
-    test.pack()
+    C_main = Canvas(juego, bg="red", width=1280, height=720, borderwidth=0, highlightthickness=0)
+    C_main.place(y=0, x=0)
+
+    background = cargarImg("back.gif")
+    fondo = Label(C_main, image=background, borderwidth=0)
+    fondo.place(x=0, y=0)
+    fondo.photo = background
+
+    C_game = Canvas(juego, bg="#DED7DE", width=1280/3, height=540, borderwidth=0, highlightthickness=0)
+    C_game.place(x=1280/3, y=0)
+
+    L_name = Label(juego, text="Piloto :", font=("bauhaus 93", 18), width=10, justify="left", bg="#DED7DE", borderwidth=2, relief = "solid" )
+    L_name.place(x=1280/12*8+50, y = 100)
+
+    V_name = Label(juego, text=nombre, font=("bauhaus 93", 18), bg="#DED7DE", borderwidth=2, relief = "solid")
+    V_name.place(x=(1280/12*8)+185, y=100)
+    img_carro = cargarImg("carro.gif")
+    carro = C_game.create_image(215, 440, anchor=CENTER, image=img_carro)
+    V_name.photo = img_carro
+    pos = C_game.coords(carro)
+
+    left_line = C_game.create_rectangle((0, 0, 110/6, 540), fill="black")
+    right_line = C_game.create_rectangle((390+110/6, 0, 1280/3, 540), fill="black")
+
+    def derecha():
+        """
+        Mueve el carro hacia la derecha,
+         si este no está en el borde derecho
+        """
+        if C_game.coords(carro)[0] < 345:
+            C_game.move(carro, 130, 0)
+
+    def izquierda():
+        """
+        Mueve el carro hacia la izquierda,
+        si este no está en el borde izquierdo
+        """
+        if C_game.coords(carro)[0] > 85:
+            C_game.move(carro, -130, 0)
+
+
+    juego.bind("<Right>", lambda event: derecha())
+    juego.bind("d", lambda event: derecha())
+    juego.bind("<Left>", lambda event: izquierda())
+    juego.bind("a", lambda event: izquierda())
+
+    #Botón de salir
+    ttk.Button(C_main, text="SALIR", command = lambda : Main(juego)).place(x=1198, y=690)
+
 
 
 
@@ -98,12 +142,16 @@ def Juego(nombre):
 #BOTONES
 img_play = cargarImg("play.gif")
 img_about = cargarImg("info.gif")
-play = Button(C_main, image=img_play, command = lambda : Game())
+play = Button(C_main, image=img_play, command=lambda : Game())
 play.place(x=465, y=310)
 
 
-about = Button(C_main, image = img_about, command = lambda : About())
-about.place(y = 630, x = 1190)
+about = Button(C_main, image=img_about, command=lambda: About())
+about.place(y=630, x=1190)
+
+#Binds Enter key to Game() function
+
+root.bind("<Return>", lambda event: Game())
 
 #MAINLOOP
 root.mainloop()
