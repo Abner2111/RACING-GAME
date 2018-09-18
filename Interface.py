@@ -43,7 +43,7 @@ L_nombre.place(x=465, y=210)
 E_nombre = Entry(C_main, text="Ingrese su nombre", width=59, bg="#DED7DE", fg="black")
 E_nombre.place(x=465, y=260)
 
-Titulo.place(y=0,x=0)
+Titulo.place(y=0, x=0)
 
 def About():
     root.withdraw()
@@ -81,11 +81,12 @@ def About():
 
 def Juego(nombre):
     root.withdraw()
-
+    #ventana principal del juego
     juego = Toplevel()
     juego.minsize(1280, 720)
     juego.resizable(width=NO, height=NO)
 
+    #canvas principal
     C_main = Canvas(juego, bg="red", width=1280, height=720, borderwidth=0, highlightthickness=0)
     C_main.place(y=0, x=0)
 
@@ -94,21 +95,58 @@ def Juego(nombre):
     fondo.place(x=0, y=0)
     fondo.photo = background
 
+    #Variable global de Velocidad del auto
+    global speed
+    speed = 1
+
+    #canvas en que se desarrolla el juego
     C_game = Canvas(juego, bg="#DED7DE", width=1280/3, height=540, borderwidth=0, highlightthickness=0)
     C_game.place(x=1280/3, y=0)
-
+    #labels del nombre del jugador
     L_name = Label(juego, text="Piloto :", font=("bauhaus 93", 18), width=10, justify="left", bg="#DED7DE", borderwidth=2, relief = "solid" )
-    L_name.place(x=1280/12*8+50, y = 100)
+    L_name.place(x=1280/12*8+50, y=100)
 
     V_name = Label(juego, text=nombre, font=("bauhaus 93", 18), bg="#DED7DE", borderwidth=2, relief = "solid")
     V_name.place(x=(1280/12*8)+185, y=100)
-    img_carro = cargarImg("carro.gif")
-    carro = C_game.create_image(215, 440, anchor=CENTER, image=img_carro)
-    V_name.photo = img_carro
-    pos = C_game.coords(carro)
 
+    #Carro del jugador
+    img_carro = cargarImg("carro.gif")
+    carro = C_game.create_image(215, 500, anchor=CENTER, image=img_carro)
+    V_name.photo = img_carro
+
+    #barras laterales
     left_line = C_game.create_rectangle((0, 0, 110/6, 540), fill="black")
     right_line = C_game.create_rectangle((390+110/6, 0, 1280/3, 540), fill="black")
+
+    #Referencias
+    left_reference = C_game.create_rectangle((0, 0, 110/6, 110/6), fill="white")
+    right_reference = C_game.create_rectangle((390+110/6, 0, 1280/3, 110 / 6), fill="white")
+
+
+
+    #Cantidad de Competidoes en pantalla
+
+    #acelerar
+    def acelerar():
+        global speed
+        speed = speed + 1
+
+
+    #mueve referencias
+    def move_refereces(speed):
+        """
+        mueve los elementos de la pantalla del juego de acuerdo a la velocidad definida
+        :param speed:
+        :return:
+        """
+        pos = C_game.coords(left_reference)
+        C_game.move(left_reference, 0, speed)
+        C_game.move(right_reference, 0, speed)
+
+        if pos[3] >= 540:
+            C_game.move(right_reference, 0, -(550-110/6))
+            C_game.move(left_reference, 0, -(550 - 110 / 6))
+
 
     def derecha():
         """
@@ -131,9 +169,13 @@ def Juego(nombre):
     juego.bind("d", lambda event: derecha())
     juego.bind("<Left>", lambda event: izquierda())
     juego.bind("a", lambda event: izquierda())
-
+    juego.bind("<Return>", lambda event: acelerar())
     #Botón de salir
     ttk.Button(C_main, text="SALIR", command = lambda : Main(juego)).place(x=1198, y=690)
+    while True:
+        move_refereces(speed)
+        juego.update()
+        time.sleep(0.1)
 
 
 
