@@ -1,8 +1,6 @@
 from tkinter import *
 import tkinter
 import random
-from threading import Thread
-import threading
 import time
 import os
 import winsound
@@ -45,7 +43,7 @@ C_main.place(x=0, y=0)
 
 #Titulo
 img_titulo = cargarImg("titulo.gif")
-Titulo = Label(C_main,image=img_titulo, bg="white"
+Titulo = Label(C_main, image=img_titulo, bg="white"
                , borderwidth=0, highlightthickness=0)
 
 #Entrada de texto para nombre del jugador
@@ -99,14 +97,18 @@ def Juego(nombre):
 
 
 #    Variable global de Velocidad del auto
-    global speed, players, max_vel, ind_vel, gear, recorrido
+    global speed, players, max_vel, ind_vel, gear, recorrido, rpm_i, recorrido_dato, C1, C2, img_carro
     speed = 10
     players = 0
     max_vel = 15
     gear = 1
-    recorrido = 0
+    recorrido = IntVar()
+    recorrido_dato = 0
     inicio = time.time()
     tiempo = StringVar()
+    rpm_i = time.time()
+
+
 
     def contar_tiempo():
         fin = time.time()
@@ -117,17 +119,17 @@ def Juego(nombre):
     juego.minsize(1280, 720)
     juego.resizable(width=NO, height=NO)
 
-    #canvas principal
+#   canvas principal
     C_main = Canvas(juego, bg="red", width=1280, height=720, borderwidth=0, highlightthickness=0)
     C_main.place(y=0, x=0)
 
-    #fondo
+#   fondo
     background = cargarImg("back.gif")
     fondo = Label(C_main, image=background, borderwidth=0)
     fondo.place(x=0, y=0)
     fondo.photo = background
 
-    # labels del nombre del jugador
+#   labels del nombre del jugador
     L_name = Label(C_main, text="Piloto :", font=("bauhaus 93", 18), width=10, justify="left", bg="#DED7DE",
                    borderwidth=2, relief="solid")
     L_name.place(x=1280 / 12 * 8 + 50, y=100)
@@ -141,26 +143,31 @@ def Juego(nombre):
     L_tiempo.place(x=1280 / 12 + 50, y=100)
 
 #   Label de recorrido
+    L_recorrido = Label(C_main, textvariable=recorrido, font =("bauhaus 93", 18), width=10, justify="left",
+                         bg="#DED7DE", borderwidth=2, relief="solid")
+    L_recorrido.place(x=1280 / 12 + 50, y=200)
 
-    #canvas de estadisticas
+#   Canvas de estadisticas
     C_info = Canvas(juego, bg="#DED7DE", width=1280/3, height=180, borderwidth=0, highlightthickness=0)
     C_info.place(x=1280/3, y=540)
 
-    barra_superior = C_info.create_rectangle((0, 0, 1280/3, 5), fill="black")
 
-    #Label de velocidad
+
+    dashboard = cargarImg("dash.gif")
+    dash = C_info.create_image(213, 90, anchor=CENTER, image=dashboard)
+    juego.photo = dashboard
+
+#   Indicador de velocidad
     ind_vel = C_info.create_text(50, 50, text=str(speed)+"km/h")
 
-
-
-    #canvas en que se desarrolla el juego
+#   Canvas en que se desarrolla el juego
     C_game = Canvas(juego, bg="#DED7DE", width=1280/3, height=540, borderwidth=0, highlightthickness=0)
     C_game.place(x=1280/3, y=0)
 
     #Carro del jugador
     img_carro = cargarImg("carro.gif")
     carro = C_game.create_image(215, 500, anchor=CENTER, image=img_carro)
-    V_name.photo = img_carro
+    juego.photo = img_carro
 
     #barras laterales
     left_line = C_game.create_rectangle((0, 0, 110/6, 540), fill="black")
@@ -169,6 +176,11 @@ def Juego(nombre):
     #Referencias
     left_reference = C_game.create_rectangle((0, 0, 110/6, 110/6), fill="white")
     right_reference = C_game.create_rectangle((390+110/6, 0, 1280/3, 110 / 6), fill="white")
+
+    #   competidores
+    C1 = C_game.create_image(85+(130*random.randint(0, 2)), 10, anchor=CENTER, image=img_carro)
+    C2 = C_game.create_image(85+(130*random.randint(0, 2)), 10, anchor=CENTER, image=img_carro)
+
 
     def update_stats():
         global ind_vel
@@ -199,27 +211,50 @@ def Juego(nombre):
             update_stats()
 
     #advertencia de cambio de gears
-    def alerta_cambio(rpm):
-        time.sleep(rpm)
 
-    #mueve referencias
+
+#   Mueve competidores
+
+    def mover_competidores(velocidad):
+        pos1 = C_game.coords(C1)
+        pos2 = C_game.coords(C2)
+        C_game.move(C1, 0, velocidad)
+        C_game.move(C2, 0, velocidad)
+
+        if pos1[1] >= 600:
+            if pos1[0] == 85:
+                C_game.move(C1, 130*random.randrange(0, 2, 1), -750)
+            if pos1[0] == 215:
+                C_game.move(C1, 130 * random.randrange(-1, 1, 2), -700)
+            if pos1[0] == 345:
+                C_game.move(C1, 130 * random.randrange(-2, -1, 2), -800)
+        if pos2[1] >= 600:
+            if pos2[0] == 85:
+                C_game.move(C2, 130*random.randrange(0, 2, 1), -800)
+            if pos2[0] == 215:
+                C_game.move(C2, 130 * random.randrange(-1, 1, 2), -650)
+            if pos2[0] == 345:
+                C_game.move(C2, 130 * random.randrange(-2, -1, 2), -900)
+
+
+#   Mueve referencias
     def move_refereces(speed):
         """
         mueve los elementos de la pantalla del juego de acuerdo a la velocidad definida
         :param speed:
         :return :
         """
-        global recorrido
+        global recorrido, recorrido_dato
         pos = C_game.coords(left_reference)
         C_game.move(left_reference, 0, speed)
         C_game.move(right_reference, 0, speed)
-        recorrido = recorrido + 1
 
 
         if pos[3] >= 540:
             C_game.move(right_reference, 0, -(550-110/6))
             C_game.move(left_reference, 0, -(550 - 110 / 6))
-
+            recorrido_dato += 0.25
+            recorrido.set(recorrido_dato)
 
     def derecha():
         """
@@ -245,17 +280,15 @@ def Juego(nombre):
     juego.bind("<Return>", lambda event: acelerar())
     juego.bind("<Up>", lambda event: change_gear())
     #Botón de salir
-    ttk.Button(C_main, text="SALIR", command = lambda : Main(juego)).place(x=1198, y=690)
+    ttk.Button(C_main, text="SALIR", command=lambda: Main(juego)).place(x=1198, y=690)
 
     while True:
         contar_tiempo()
         move_refereces(speed)
+        mover_competidores(speed-3)
         contar_tiempo()
         juego.update()
         time.sleep(0.1)
-
-
-
 
 
 #BOTONES

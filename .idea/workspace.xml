@@ -13,15 +13,15 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/Racing$Interface.coverage" NAME="Interface Coverage Results" MODIFIED="1537333413614" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Racing$Interface.coverage" NAME="Interface Coverage Results" MODIFIED="1537413525925" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="Interface.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Interface.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="302">
-              <caret line="176" column="22" lean-forward="true" selection-start-line="176" selection-start-column="22" selection-end-line="176" selection-end-column="22" />
+            <state relative-caret-position="247">
+              <caret line="236" column="72" selection-start-line="236" selection-start-column="72" selection-end-line="236" selection-end-column="72" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -58,10 +58,10 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="767" />
-    <option name="y" value="141" />
-    <option name="width" value="978" />
-    <option name="height" value="1039" />
+    <option name="x" value="635" />
+    <option name="y" value="-10" />
+    <option name="width" value="980" />
+    <option name="height" value="1040" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -69,7 +69,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -86,6 +85,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -200,7 +200,14 @@
       <option name="project" value="LOCAL" />
       <updated>1537299501266</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="funcion de aceleracion funciona, cambios de gears funcionan, falta funcion para obligar el cambio de marcha e interfaz de stats">
+      <created>1537333641059</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1537333641059</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -212,7 +219,7 @@
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32965517" />
       <window_info anchor="bottom" id="Python Console" order="7" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.34344828" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.41931033" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.3324138" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.0625" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
@@ -243,14 +250,55 @@
     <MESSAGE value="Inicio de interfaz de Juego y addition de elementos en interfaz de pantalla de inicio" />
     <MESSAGE value="Carro principal agregado y funciones para moverlo. Fondo agregado" />
     <MESSAGE value="referencias funionan&#10;&#10;funcion de aceleracion" />
-    <option name="LAST_COMMIT_MESSAGE" value="referencias funionan&#10;&#10;funcion de aceleracion" />
+    <MESSAGE value="funcion de aceleracion funciona, cambios de gears funcionan, falta funcion para obligar el cambio de marcha e interfaz de stats" />
+    <option name="LAST_COMMIT_MESSAGE" value="funcion de aceleracion funciona, cambios de gears funcionan, falta funcion para obligar el cambio de marcha e interfaz de stats" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="2" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Interface.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3339">
+          <caret line="159" column="64" lean-forward="true" selection-start-line="159" selection-start-column="64" selection-end-line="159" selection-end-column="64" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Interface.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1050">
+          <caret line="50" column="28" lean-forward="true" selection-start-line="50" selection-start-column="28" selection-end-line="50" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Interface.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2331">
+          <caret line="111" lean-forward="true" selection-start-line="111" selection-end-line="111" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Interface.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2310">
+          <caret line="110" selection-start-line="110" selection-end-line="110" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Interface.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2520">
@@ -347,8 +395,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Interface.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="302">
-          <caret line="176" column="22" lean-forward="true" selection-start-line="176" selection-start-column="22" selection-end-line="176" selection-end-column="22" />
+        <state relative-caret-position="247">
+          <caret line="236" column="72" selection-start-line="236" selection-start-column="72" selection-end-line="236" selection-end-column="72" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
