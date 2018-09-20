@@ -1,5 +1,6 @@
 from tkinter import *
 import tkinter
+from tkinter import messagebox
 import random
 import time
 import os
@@ -7,8 +8,8 @@ import winsound
 from tkinter import ttk
 
 #Cacion de inicio
-def Start_song():
 
+def Start_song():
     winsound.PlaySound('sounds\\start.wav', winsound.SND_ASYNC)
 
 #detener sonido
@@ -110,8 +111,18 @@ def Juego(nombre):
     tiempo = StringVar()
     rpm_i = time.time()
     gear_change = False
-
-
+    def pierde():
+        reiniciar = messagebox.askyesno("Usted ha perdido", "Jugar de nuevo?")
+        if reiniciar:
+            Main(juego)
+            juego.destroy()
+        else:
+            root.destroy()
+    def gana():
+        reiniciar = messagebox.askyesno("Usted ha ganado", "Jugar de nuevo?")
+        if reiniciar:
+            Main(juego)
+            juego.destroy()
 
     def contar_tiempo():
         fin = time.time()
@@ -307,7 +318,16 @@ def Juego(nombre):
         """
         if C_game.coords(carro)[0] > 85:
             C_game.move(carro, -130, 0)
+    def ver_gana():
+        global recorrido_dato
+        if recorrido_dato == 7:
+            recorrido_dato = 0
+            gana()
 
+    def ver_pierde():
+        if (C_game.coords(C1)[1] >= 420 and C_game.coords(C1)[0] == C_game.coords(carro)[0]) or \
+                (C_game.coords(C2)[1] >= 420 and C_game.coords(C2)[0] == C_game.coords(carro)[0]):
+            pierde()
     #BOTONES
     juego.bind("<Right>", lambda event: derecha())
     juego.bind("d", lambda event: derecha())
@@ -326,6 +346,8 @@ def Juego(nombre):
         contar_tiempo()
         desacelera()
         juego.update()
+        ver_gana()
+        ver_pierde()
         time.sleep(0.1)
 
 
