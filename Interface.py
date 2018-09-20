@@ -97,16 +97,19 @@ def Juego(nombre):
 
 
 #    Variable global de Velocidad del auto
-    global speed, players, max_vel, ind_vel, gear, recorrido, rpm_i, recorrido_dato, C1, C2, img_carro
+    global speed, players, max_vel, ind_vel, gear, recorrido, rpm_i, recorrido_dato, C1, C2, img_carro, ind_gear, \
+        min_vel, gear_change
     speed = 10
     players = 0
     max_vel = 15
+    min_vel = 10
     gear = 1
     recorrido = IntVar()
     recorrido_dato = 0
     inicio = time.time()
     tiempo = StringVar()
     rpm_i = time.time()
+    gear_change = False
 
 
 
@@ -158,7 +161,11 @@ def Juego(nombre):
     juego.photo = dashboard
 
 #   Indicador de velocidad
-    ind_vel = C_info.create_text(50, 50, text=str(speed)+"km/h")
+    ind_vel = C_info.create_text(165, 50, text=str(speed), font=("segoe ui semibold", 20))
+    km = C_info.create_text(165, 70, text="Km/h", font=("segoe ui semibold", 15))
+#   Indicador de marchas
+    ind_gear = C_info.create_text(253, 50, text=str(gear), font=("segoe ui semibold", 20))
+    marcha = C_info.create_text(253, 70, text="Marcha", font=("segoe ui semibold", 15))
 
 #   Canvas en que se desarrolla el juego
     C_game = Canvas(juego, bg="#DED7DE", width=1280/3, height=540, borderwidth=0, highlightthickness=0)
@@ -178,28 +185,52 @@ def Juego(nombre):
     right_reference = C_game.create_rectangle((390+110/6, 0, 1280/3, 110 / 6), fill="white")
 
     #   competidores
-    C1 = C_game.create_image(85+(130*random.randint(0, 2)), 10, anchor=CENTER, image=img_carro)
-    C2 = C_game.create_image(85+(130*random.randint(0, 2)), 10, anchor=CENTER, image=img_carro)
+    img_compe = cargarImg("competidor.gif")
+    C1 = C_game.create_image(85+(130*random.randint(0, 2)), 10, anchor=CENTER, image=img_compe)
+    C2 = C_game.create_image(85+(130*random.randint(0, 2)), 10, anchor=CENTER, image=img_compe)
+    juego.photo = img_compe
 
 
     def update_stats():
-        global ind_vel
-        ind_vel = C_info.create_text(50, 50, text=str(speed)+"km/h")
+        global ind_vel, ind_gear
+        C_info.delete(ind_vel)
+        ind_vel = C_info.create_text(165, 50, text=str(speed), font=("segoe ui semibold", 20))
+        C_info.delete(ind_gear)
+        ind_gear = C_info.create_text(253, 50, text=str(gear), font=("segoe ui semibold", 20))
+
 
     def change_gear():
-        global gear, max_vel
+        global gear, max_vel, min_vel
         if gear < 4:
             gear += 1
         if gear == 2:
             max_vel = 45
+            min_vel = 15
         if gear == 3:
             max_vel = 70
+            min_vel = 45
         if gear == 4:
             max_vel = 100
+            min_vel = 70
+    def low_gear():
+        global gear, max_vel, min_vel, gear_change
+        gear_change = True
+        if gear > 1:
+            if gear == 4:
+                max_vel = 70
+                min_vel = 45
+            if gear == 3:
+                max_vel = 45
+                min_vel = 15
+            if gear == 2:
+                max_vel = 15
+                min_vel = 10
+            gear -= 1
 
-    #acelerar
+#   acelerar
     def acelerar():
-        global speed, max_vel, gear
+        global speed, max_vel, gear, gear_change
+        gear_change = False
         aumento = 1
         if gear == 2:
             aumento = 3
@@ -207,10 +238,15 @@ def Juego(nombre):
             aumento = 5
         if speed < max_vel:
             speed = speed + aumento
-            C_info.delete(ind_vel)
-            update_stats()
+        update_stats()
 
-    #advertencia de cambio de gears
+#   simulacion de desaceleracion
+    def desacelera():
+        global speed, max_vel, min_vel, gear_change
+        if gear_change:
+            if speed > min_vel:
+                speed -= 1
+            update_stats()
 
 
 #   Mueve competidores
@@ -223,11 +259,11 @@ def Juego(nombre):
 
         if pos1[1] >= 600:
             if pos1[0] == 85:
-                C_game.move(C1, 130*random.randrange(0, 2, 1), -750)
+                C_game.move(C1, 130*random.randrange(0, 2, 1), -1100)
             if pos1[0] == 215:
                 C_game.move(C1, 130 * random.randrange(-1, 1, 2), -700)
             if pos1[0] == 345:
-                C_game.move(C1, 130 * random.randrange(-2, -1, 2), -800)
+                C_game.move(C1, 130 * random.randrange(-2, -1, 2), -850)
         if pos2[1] >= 600:
             if pos2[0] == 85:
                 C_game.move(C2, 130*random.randrange(0, 2, 1), -800)
@@ -279,6 +315,7 @@ def Juego(nombre):
     juego.bind("a", lambda event: izquierda())
     juego.bind("<Return>", lambda event: acelerar())
     juego.bind("<Up>", lambda event: change_gear())
+    juego.bind("<Down>", lambda event: low_gear())
     #Botón de salir
     ttk.Button(C_main, text="SALIR", command=lambda: Main(juego)).place(x=1198, y=690)
 
@@ -287,6 +324,7 @@ def Juego(nombre):
         move_refereces(speed)
         mover_competidores(speed-3)
         contar_tiempo()
+        desacelera()
         juego.update()
         time.sleep(0.1)
 
